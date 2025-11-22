@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: lyriq-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn lyriq_backend.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: lyriq-backend.onrender.com
+      - key: DB_NAME
+        fromDatabase:
+          name: lyriq-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: lyriq-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: lyriq-db
+          property: password
+      - key: DB_HOST
+        fromDatabase:
+          name: lyriq-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: lyriq-db
+          property: port
+      - key: FIREBASE_CREDENTIALS_PATH
+        value: /opt/render/project/src/firebase-credentials.json
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: lyriq-db
+    databaseName: lyriq_db
+    user: lyriq_user
+    plan: free
+
+
